@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-header sticky-top">
+<div class="container">
+<a href="{% url 'home' %}" class="btn bg-info text-white">Back</a>
+</div>
+</div>
+<br>
+<div class="container">
+  <h5>Pending Approvals</h5>
+    <br>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+  {% for user in users %}
+  {% if user.is_active == False %}
+
+  <tbody>
+      <tr>
+        <td>{{ user.username}}</td>
+        <td>{{ user.email}}</td>
+        <td>
+          <a href="{% url 'approve_user' user.id %}"><div class="btn btn-success" onclick="return confirm('Are you sure?');">Approve</div></a>
+          <a href="{% url 'delete_user' user.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Reject</div></a>
+        </td>
+      </tr>
+    </tbody>
+    {% endif %}
+  {% endfor %}
+
+  </table>
+  <br>
+  <h5>Approved Users</h5>
+    <br>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+  {% if users|length > 1 %}
+  {% for user in users %}
+  {% if user.is_active == True and user.is_superuser != True %}
+  <tbody>
+      <tr>
+        <td>{{ user.username}}</td>
+        <td>{{ user.email}}</td>
+        <td>
+          <a href="{% url 'delete_user' user.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Remove</div></a>
+          <a href="{% url 'deactivate_user' user.id %}"><div class="btn btn-secondary" onclick="return confirm('Are you sure?');">Deactivate</div></a>
+        </td>
+      </tr>
+    </tbody>
+
+    {% endif %}
+  {% endfor %}
+  {% else %}
+  <tbody>
+    <tr>
+      <td colspan="5">No user found</td>
+    </tr>
+  </tbody>
+  {% endif %}
+  </table>
+</div>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

@@ -20,7 +20,7 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('login', auth_views.LoginView.as_view(template_name="user_login.html"), name="login"),
+    url('login', auth_views.LoginView.as_view(template_name="user_login.html"), name="user_login"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('serious_squad_app.urls')),
 ]
