@@ -15,4 +15,8 @@ urlpatterns = [
 	path('delete_user/<int:id>', delete_user, name='delete_user'),
 	path('deactivate_user/<int:id>', deactivate_user, name='deactivate_user'),
 	path('clear_notification', clear_notification, name='clear_notification'),
+	path('upload_data',upload_data,name='upload_data'),
+	path('my_data',my_data,name='my_data'),
+	path('delete_data/<int:id>', delete_data, name='delete_data'),
+	path('download_data/<path>/<data>', download_data, name='download_data'),
 ]

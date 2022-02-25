@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-header sticky-top bg-muted">
+<div class="container">
+<a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
+</div>
+</div>
+<br>
+<div class="container">
+  <h5>My Data</h5>
+    <br>
+  <table class="table table-bordered bg-light">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>File Name</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+  {% for i in data %}
+  <tbody>
+      <tr>
+        <td>{{ i.title }}</td>
+        <td>{{ i.data }}</td>
+        <td>{{ i.description }}</td>
+        <td>
+          <a href="{% url 'delete_data' i.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</div></a>
+          <a href="/download_data/{{i.data}}"><div class="btn btn-info">Download</div></a>
+        </td>
+    </tbody>
+      </tr>
+      {% empty %}
+      <tbody>
+    <tr>
+      <td colspan="5">No data found</td>
+    </tr>
+  </tbody>
+  {% endfor %}
+
+  </table>
+  <br>
+</div>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

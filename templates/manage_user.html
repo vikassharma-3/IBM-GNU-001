@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="card-header sticky-top">
+<div class="card-header sticky-top bg-muted">
 <div class="container">
-<a href="{% url 'home' %}" class="btn bg-info text-white">Back</a>
+<a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
 </div>
 </div>
 <br>
@@ -11,7 +11,7 @@
   <h5>Pending Approvals</h5>
     <br>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered bg-light">
     <thead>
       <tr>
         <th>Username</th>
@@ -40,7 +40,7 @@
   <h5>Approved Users</h5>
     <br>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered bg-light">
     <thead>
       <tr>
         <th>Username</th>
@@ -57,8 +57,8 @@
         <td>{{ user.username}}</td>
         <td>{{ user.email}}</td>
         <td>
-          <a href="{% url 'delete_user' user.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Remove</div></a>
           <a href="{% url 'deactivate_user' user.id %}"><div class="btn btn-secondary" onclick="return confirm('Are you sure?');">Deactivate</div></a>
+          <a href="{% url 'delete_user' user.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Remove</div></a>
         </td>
       </tr>
     </tbody>

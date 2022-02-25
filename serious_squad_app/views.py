@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,18 @@ from django.contrib import messages
 from serious_squad.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from notifications.signals import notify
+from serious_squad.settings import *
+from django.core.files.storage import FileSystemStorage
+from wsgiref.util import FileWrapper
+import mimetypes
+from django.utils.encoding import smart_text
+
+def superuser_only(function):
+    def _inner(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return render(request,'403.html')
+        return function(request, *args, **kwargs)
+    return _inner
 
 def home(request):
     title = ""
@@ -55,8 +68,9 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('change_password')
+            messages.success(request, 'Your password is successfully updated. Try to login with new password ')
+            logout(request)
+            return redirect('user_login')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
@@ -65,6 +79,7 @@ def change_password(request):
         'form': form
     })
 
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('home')
@@ -75,28 +90,38 @@ def user_dashboard(request):
     else:
         return redirect('login')
 
+@superuser_only
 def admin_dashboard(request):
     if request.user.is_authenticated:
         return render(request, 'admin_dashboard.html')
     else:
         return redirect('login')
 
+@superuser_only
 def manage_user(request):
     users = User.objects.all()
     return render(request,"manage_user.html",{'users':users})
 
+@superuser_only
 def approve_user(request, id):
     user = User.objects.get(id=id)
     user.is_active = 1
     user.save()
+    try:
+        notification = Notification.objects.get(actor_object_id=id)
+        notification.delete()
+    except:
+        pass
     return redirect("manage_user")
 
+@superuser_only
 def deactivate_user(request, id):
     user = User.objects.get(id=id)
     user.is_active = 0
     user.save()
     return redirect("manage_user")
 
+@superuser_only
 def delete_user(request, id):
     user = User.objects.get(id=id)
     user.delete()
@@ -107,7 +132,44 @@ def delete_user(request, id):
         pass
     return redirect("manage_user")
 
+@superuser_only
 def clear_notification(request):
     notification = Notification.objects.all()
     notification.delete()
     return redirect('home')
+
+def upload_data(request):
+    if request.method == 'POST':
+        form = DataForm(request.POST, request.FILES,)
+        if form.is_valid():
+            fs=form.save(commit=False)
+            fs.user_id = request.user.id
+            fs.save()
+            messages.info(request, 'Successfully Uploaded !')
+            return redirect('upload_data')
+    else:
+        form = DataForm()
+    return render(request, 'upload_data.html', {'form': form})
+
+def my_data(request):
+    data_obj_list = []
+    data_obj = Data.objects.all()
+    for i in range(len(data_obj)):
+        if request.user.id == data_obj[i].user_id:
+            data_obj_list.append(data_obj[i])
+    return render(request,"my_data.html",{'data':data_obj_list})
+
+def delete_data(request, id):
+    data = Data.objects.get(id=id)
+    data.delete()
+    return redirect("my_data")
+
+def download_data(request, path ,data):
+    file_path = MEDIA_ROOT+'/'+ path +'/' + data
+    file_wrapper = FileWrapper(open(file_path,'rb'))
+    file_mimetype = mimetypes.guess_type(file_path)
+    response = HttpResponse(file_wrapper, content_type=file_mimetype )
+    response['X-Sendfile'] = file_path
+    response['Content-Length'] = os.stat(file_path).st_size
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_text(data)
+    return response

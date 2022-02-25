@@ -4,12 +4,97 @@
 <style type="text/css">
   .card:hover{
      transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);}
 </style>
-}
 <div class="container">
-
-Non Priviledge User !!!
+<br>
+  <div class="row">
+        <div class="col-12 mt-3 mb-1">
+          <h4 class="text-muted">DASHBOARD</h4>
+        </div>
+  </div>
+  <br>
+      <div class="row">
+        <div class="col-xl-6 col-sm-6 col-12">
+          <div class="card shadow-sm btn">
+            <a class="text-info" style="text-decoration:none;" href="{% url 'upload_data' %}">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                    <i class="bi-upload float-left text-info display-3"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h4>Upload Data</h4>
+                    <p>Upload to IBADS</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-6 col-sm-6 col-12">
+          <div class="card shadow-sm btn">
+            <a class="text-info" style="text-decoration:none;" href="#">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                    <i class="bi-download float-left text-info display-3"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h4>Download Data</h4>
+                    <p>Search and Download</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-xl-6 col-sm-6 col-12">
+          <div class="card shadow-sm btn">
+            <a class="text-info" style="text-decoration:none;" href="{% url 'my_data' %}">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                    <i class="bi-files float-left text-info display-3"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h4>My Data</h4>
+                    <p>Uploaded Data</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-6 col-sm-6 col-12">
+          <div class="card shadow-sm btn">
+            <a class="text-info" style="text-decoration:none;" href="#">
+            <div class="card-content">
+              <div class="card-body">
+                <div class="media d-flex">
+                  <div class="align-self-center">
+                    <i class="bi-file-check float-left text-info display-3"></i>
+                  </div>
+                  <div class="media-body text-right">
+                    <h4>Manage Data Requests</h4>
+                    <p>Approve or Reject Data Requests</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
 
 </div>
 <br>
