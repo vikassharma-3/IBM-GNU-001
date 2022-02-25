@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_index.html' %}
 {% block title %}Sign up{% endblock %}
 {% load static %}
 
@@ -18,7 +18,7 @@
               <div class="col">
               <div class="form-group">
               <label for="username" class="text-secondary"><b>*Username</b></label>
-              <input class="form-control" id="username" type="text" name="username" placeholder="Username">
+              <input class="form-control" id="username" type="text" name="username" placeholder="Username" required>
               </div>
               <div class="form-group">
               <label for="first_name" class="text-secondary"><b>First Name</b> (optional)</label>
@@ -32,15 +32,15 @@
               <div class="col">
               <div class="form-group">
               <label for="email" class="text-secondary"><b>*Email</b></label>
-              <input class="form-control" id="email" type="email" name="email" placeholder="example@example.com">
+              <input class="form-control" id="email" type="email" name="email" placeholder="example@example.com" required>
               </div>
               <div class="form-group">
               <label for="password1" class="text-secondary"><b>*Password</b></label>
-              <input class="form-control" id="password1" type="password" name="password1" placeholder="Password">
+              <input class="form-control" id="password1" type="password" name="password1" placeholder="Password" required>
               </div>
               <div class="form-group">
               <label for="password2" class="text-secondary"><b>*Confirm Password</b></label>
-              <input class="form-control" id="password2" type="password" name="password2" placeholder="Confirm Password">
+              <input class="form-control" id="password2" type="password" name="password2" placeholder="Confirm Password" required>
               </div>
               </div>
               </div>

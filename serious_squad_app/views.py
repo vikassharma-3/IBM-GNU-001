@@ -12,6 +12,13 @@ from serious_squad.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from notifications.signals import notify
 
+def superuser_only(function):
+    def _inner(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return render(request,'403.html')
+        return function(request, *args, **kwargs)
+    return _inner
+
 def home(request):
     title = ""
     if request.user.is_authenticated:
@@ -55,8 +62,9 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('change_password')
+            messages.success(request, 'Your password is successfully updated. Try to login with new password ')
+            logout(request)
+            return redirect('user_login')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
@@ -65,6 +73,7 @@ def change_password(request):
         'form': form
     })
 
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('home')
@@ -75,28 +84,38 @@ def user_dashboard(request):
     else:
         return redirect('login')
 
+@superuser_only
 def admin_dashboard(request):
     if request.user.is_authenticated:
         return render(request, 'admin_dashboard.html')
     else:
         return redirect('login')
 
+@superuser_only
 def manage_user(request):
     users = User.objects.all()
     return render(request,"manage_user.html",{'users':users})
 
+@superuser_only
 def approve_user(request, id):
     user = User.objects.get(id=id)
     user.is_active = 1
     user.save()
+    try:
+        notification = Notification.objects.get(actor_object_id=id)
+        notification.delete()
+    except:
+        pass
     return redirect("manage_user")
 
+@superuser_only
 def deactivate_user(request, id):
     user = User.objects.get(id=id)
     user.is_active = 0
     user.save()
     return redirect("manage_user")
 
+@superuser_only
 def delete_user(request, id):
     user = User.objects.get(id=id)
     user.delete()
@@ -107,6 +126,7 @@ def delete_user(request, id):
         pass
     return redirect("manage_user")
 
+@superuser_only
 def clear_notification(request):
     notification = Notification.objects.all()
     notification.delete()

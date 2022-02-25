@@ -1,0 +1,104 @@
+{% load static %}
+{% load notifications_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{% block title %}IBADS By Group-01{% endblock %}</title>
+<link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.ico' %}"/>
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+<link href="{% static 'js/bootstrap.min.js' %}" rel="stylesheet">
+<link href="{% static 'js/jquery.min.js' %}" rel="stylesheet">
+<link href="{% static 'js/popper.min.js' %}" rel="stylesheet">
+<link href="{% static 'icons\font\bootstrap-icons.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+
+<style type="text/css">
+  .card-header{z-index: 1000;}
+</style>
+</head>
+
+<body style="background-image:url({% static 'serious_squad_app/image/background.jpg' %});background-size: cover;">
+<div>
+    <nav class="navbar navbar-expand-md navbar-light sticky-top bg-info shadow">
+      <div class="container">
+        <h4><a href="{% url 'home' %}" class="navbar-brand text-light"><img src="{% static 'serious_squad_app/image/logo3.png' %}" class = "img-responsive" width = "30%">
+        &nbsp;&nbsp;&nbsp;&nbsp;Identity-Based Authenticated Data Sharing</a></h4>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+          {% if user.is_superuser %}
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-bell" style="font-size:23px"></i>
+                <span class="badge bg-danger circle position-absolute" style="font-size:10px;">{% live_notify_badge %}</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                {% for notification in user.notifications.unread %}
+    	           <div class="text-center">
+                   {% if notification.actor != None %}
+                   <a class="dropdown-item bg-muted" href="{% url 'manage_user' %}">
+                    <b class="text-muted">Request for approval</b>
+                    <br>
+                     User <b>{{ notification.actor }}</b> is requesting for approval
+                   </a>
+    		         </div>
+    		           <div class="dropdown-divider"></div>
+                   {% endif %}
+                   {% empty %}
+                   <div class="text-center">
+                    <h7><b>No notification</b></h7>
+                  </div>
+    	              {% endfor %}
+                    {% if user.notifications.unread|length >= 1 %}
+                    <div class="text-center">
+                    <button class="dropdown-item" type="button" ><a style="font-size:15px;" href="{% url 'clear_notification' %}">Clear Notification</a></button>
+                  </div>
+                    {% endif %}
+                </div>
+        		</div>
+        </div>
+          &nbsp;&nbsp;
+          {% endif %}
+          {% if user.is_authenticated %}
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ml-auto">
+                <div class="dropdown">
+  					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    				Hi {{ user.username }}!
+  					</button>
+  					       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a>
+   					          <a class="dropdown-item" href="{% url 'user_logout' %}">Logout</a>
+  					        </div>
+				        </div>
+			      </div>
+          </div>
+          {% endif %}
+        </div>
+    </nav>
+</div>
+
+{% block content %}
+{% endblock %}
+
+<!-- Footer -->
+<footer class="page-footer font-small bg-info blue fixed-bottom shadow-lg">
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3 text-light">© 2022 Copyright:
+    <a href="" class="text-white">Ganpat University | IBADS By Group-01 </a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+</body>
+</html>
