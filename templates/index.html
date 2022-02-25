@@ -1,63 +1,27 @@
-{% extends 'base.html' %}
+{% extends 'base_index.html' %}
 {% block content %}
 
 <style type="text/css">
   .card:hover{
      transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);}
 </style>
-}
 <div class="container">
 <br>
-
-<div class="row">
-      <div class="col-12 mt-3 mb-1">
-        <!-- <h4 class="text-uppercase">Dashboard</h4> -->
-      </div>
-    </div>
-
-		<div class="row">
-      <div class="col-xl-6 col-sm-6 col-12">
-        <div class="card shadow-sm btn">
-          <a href="{% url 'user_login' %}">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="align-self-center">
-									<i class="bi-box-arrow-in-right float-left text-info display-3"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3>Sign In</h3>
-									<span>Log in to account</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-xl-6 col-sm-6 col-12">
-        <div class="card shadow-sm btn">
-          <a href="{% url 'user_signup' %}">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="media d-flex">
-                <div class="align-self-center">
-                  <i class="bi-person-plus float-left text-info display-3"></i>
-                </div>
-                <div class="media-body text-right">
-                  <h3>Sign Up</h3>
-                  <span>Create a new account</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          </a>
-        </div>
+<br>
+<br>
+<br>
+<br>
+    <div class="row">
+      <div class="col-sm-12 text-center align-self-center">
+            <p class="text-info" style="letter-spacing: 7px;font-size: 20px;"><b>WELCOME TO IBADS</b></p>
+            <h1 class="text-secondary" style="font-size: 64px;"><b>Share Data Securely</b></h1>
+            <br><br>
+              <a href="{% url 'user_login' %}" class="btn btn-lg btn-outline-info rounded-pill mr-2"><b>&nbsp; Sign In &nbsp;</b></a>
+              <a href="{% url 'user_signup' %}" class="btn btn-lg btn-outline-info rounded-pill"><b>&nbsp; Sign Up &nbsp;</b></a>
       </div>
     </div>
 		<br>
-
 </div>
 <br>
 <br>
