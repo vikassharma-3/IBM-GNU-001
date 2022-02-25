@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,14 @@ from django.contrib import messages
 from serious_squad.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from notifications.signals import notify
+from serious_squad.settings import *
+from django.core.files.storage import FileSystemStorage
+from wsgiref.util import FileWrapper
+import mimetypes
+from django.utils.encoding import smart_text
+import subprocess,os,sys
+import random
+import string
 
 def superuser_only(function):
     def _inner(request, *args, **kwargs):
@@ -131,3 +140,57 @@ def clear_notification(request):
     notification = Notification.objects.all()
     notification.delete()
     return redirect('home')
+
+def upload_data(request):
+    if request.method == 'POST':
+        form = DataForm(request.POST, request.FILES,)
+        if form.is_valid():
+            fs=form.save(commit=False)
+            fs.user_id = request.user.id
+            fs.key = generate_key()
+            fs.filename = fs.data.name
+            fs.save()
+            encrypt_data(fs.data,fs.key)
+            messages.info(request, 'Successfully Uploaded !')
+            return redirect('upload_data')
+    else:
+        form = DataForm()
+    return render(request, 'upload_data.html', {'form': form})
+
+def my_data(request):
+    data_obj_list = []
+    data_obj = Data.objects.all()
+    for i in range(len(data_obj)):
+        if request.user.id == data_obj[i].user_id:
+            data_obj_list.append(data_obj[i])
+    return render(request,"my_data.html",{'data':data_obj_list})
+
+def delete_data(request, id):
+    data = Data.objects.get(id=id)
+    data.data = str(data.data)+".enc"
+    data.save()
+    data.delete()
+    return redirect("my_data")
+
+def download_data(request, path ,data):
+    file_path = MEDIA_ROOT+'/'+ path +'/' + data
+    data_obj = Data.objects.get(data=path +'/' + data)
+    subprocess.run(f'openssl enc -d -aes-256-cbc -in '+'"'+file_path+'.enc'+'"'+' -out '+'"'+file_path+'"'+' -k '+data_obj.key+' -pbkdf2')
+    file_wrapper = FileWrapper(open(file_path,'rb'))
+    file_mimetype = mimetypes.guess_type(file_path)
+    response = HttpResponse(file_wrapper, content_type=file_mimetype )
+    response['X-Sendfile'] = file_path
+    response['Content-Length'] = os.stat(file_path).st_size
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_text(data)
+    os.remove(file_path)
+    return response
+
+def generate_key():
+    characters = string.ascii_letters + string.digits
+    password = ''.join(random.choice(characters) for i in range(8))
+    return password
+
+def encrypt_data(data,password):
+    data = data.path
+    subprocess.run(f'openssl enc -aes-256-cbc -in '+'"'+data+'"'+' -out '+'"'+data+'.enc'+'"'+' -k '+password+' -pbkdf2')
+    os.remove(data)
