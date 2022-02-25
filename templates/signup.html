@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  {% if form.errors %}
+    {% for field in form %}
+      {% for error in field.errors %}
+        <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
+        <div class="card card-signin my-4 shadow-sm">
+          <div class="card-header bg-white">
+            <h5 class="text-info">Sign Up</h5>
+          </div>
+          <div class="card-body">
+            <form class="form-signin" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+              <label for="username" class="text-info">Username: </label>
+              <input class="form-control" id="username" type="text" name="username">
+              </div>
+              <div class="form-group">
+              <label for="first_name" class="text-info">First Name: </label>
+              <input class="form-control" id="first_name" type="text" name="first_name">
+              </div>
+              <div class="form-group">
+              <label for="last_name" class="text-info">Last Name: </label>
+              <input class="form-control" id="last_name" type="text" name="last_name">
+              </div>
+              <div class="form-group">
+              <label for="email" class="text-info">Email: </label>
+              <input class="form-control" id="email" type="email" name="email">
+              </div>
+              <div class="form-group">
+              <label for="password1" class="text-info">Password: </label>
+              <input class="form-control" id="password1" type="password" name="password1">
+              </div>
+              <div class="form-group">
+              <label for="password2" class="text-info">Confirm Password: </label>
+              <input class="form-control" id="password2" type="password" name="password2">
+              </div>
+
+              <button class="btn btn-lg btn-primary btn-block text-uppercase bg-info" type="submit">Signup!</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+{% endblock %}

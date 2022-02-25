@@ -1,0 +1,28 @@
+
+<!-- templates/registration/login.html -->
+{% load static %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+<div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-header bg-white">
+            <h4 class="text-info">Login</h4>
+          </div>
+          <div class="card-body">
+            <form class="form-signin" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <br>
+  <button class="btn btn-lg btn-primary btn-block text-uppercase bg-info" type="submit">Login</button>
+</form>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>

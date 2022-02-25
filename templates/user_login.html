@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<!--Login-->
+
+<div class="container py-5">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
+      <div class="card card-signin my-4 shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="text-info">Login</h5>
+        </div>
+        <div class="card-body">
+
+  <form method="POST">
+    {% csrf_token %}
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
+        <div class="form-group">
+            <label class="control-label" for="username">Username</label>
+            <div class="controls">
+                <input class="form-control" type="text" id="username" name="username"  placeholder="Username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+                <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+            </div>
+        </div>
+      <div class="text-danger">{{form.errors}}</div>
+        <div class="form-group">
+            <div class="controls">
+                <button class="btn btn-lg btn-primary btn-block text-uppercase bg-info" type="submit">Login</button>
+            </div>
+        </div>
+  </form>
+  <br>
+  <p class="text-center">Don't have an account? <a href="{% url 'user_signup' %}">Create an account</a>.</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+{% endblock %}
