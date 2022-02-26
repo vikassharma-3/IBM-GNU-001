@@ -19,4 +19,6 @@ urlpatterns = [
 	path('my_data',my_data,name='my_data'),
 	path('delete_data/<int:id>', delete_data, name='delete_data'),
 	path('download_data/<path>/<data>', download_data, name='download_data'),
+	path('list_data', list_data, name='list_data'),
+	path('request_data/<int:id>', request_data, name='request_data'),
 ]
