@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-header sticky-top bg-muted">
+<div class="container">
+<a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
+</div>
+</div>
+<br>
+<div class="container">
+	<table class="table table-bordered bg-light">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Filename</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+  {% for i in data %}
+  <tbody>
+      <tr>
+        <td>{{ i.title }}</td>
+        <td>{{ i.filename }}</td>
+        <td>{{ i.description }}</td>
+      </tr>
+    </tbody>
+  {% endfor %}
+  </table>
+</div>
+{% endblock %}

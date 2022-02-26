@@ -7,11 +7,11 @@
 <a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
 </div>
 </div>
-<br>
 
 <div class="container">
 
 {% if messages %}
+  <br>
     <ul class="messages">
         {% for message in messages %}
         <div class="alert alert-success">
@@ -22,24 +22,51 @@
   {% endif %}
 
 <div class="row">
-    <div class="col-lg-5 mx-auto">
+    <div class="col-lg-7 mx-auto">
       <div class="card card-signin my-4 shadow-sm" >
         <div class="card-body">
           <div class="card-title bg-white">
             <h4 class="text-info text-center">UPLOAD</h4>
           </div>
-          <br>
+          
  <form method="post" enctype="multipart/form-data">
+    
     {% csrf_token %}
-    <div id="div_id_title" class="form-group text-secondary"> <div class=""> <input type="text" name="title" maxlength="255" class="textinput textInput form-control" required id="id_title" placeholder="*Title"> </div> </div> <div id="div_id_data" class="form-group text-secondary"> <div class=""> <input type="file" name="data" class="clearablefileinput form-control-file" required id="id_data"> </div> </div> <div id="div_id_description" class="form-group text-secondary"> <div class=""> <input type="text" name="description" maxlength="255" class="textinput textInput form-control" id="id_description" placeholder="Description"> </div> </div>
+    <div id="div_id_title" class="form-group text-secondary">
+      <div class="">
+        <label class="control-label text-secondary" for="title"><b>*Title</b></label>
+        <input type="text" name="title" maxlength="255" class="textinput textInput form-control" required id="id_title" placeholder="*Title">
+      </div>
+    </div>
+    <div id="div_id_data" class="form-group text-secondary">
+      <div class="">
+        <label class="control-label text-secondary" for="data"><b>*Upload</b></label>
+        <input type="file" name="data" class="clearablefileinput form-control-file" required id="id_data">
+      </div>
+    </div>
+    <div id="div_id_description" class="form-group text-secondary">
+      <div class="">
+        <label class="control-label text-secondary" for="description"><b>Description</b></label>
+        <input type="text" name="description" maxlength="255" class="textinput textInput form-control" id="id_description" placeholder="Description">
+      </div>
+    </div>
+    <div id="div_id_expires_on" class="form-group text-secondary">
+      <div class="">
+        <label class="control-label text-secondary" for="expires_on"><b>*Expires on</b></label>
+        <input type="datetime-local" min="{{date}}" name="expires_on" maxlength="255" class="textinput textInput form-control" required id="id_expires_on" placeholder="*expires_on">
+      </div>
+    </div>
+
     <button class="btn btn-md btn-primary bg-info btn-block" type="submit">Upload</button>
+
   </form>
   <br>
         </div>
       </div>
     </div>
   </div>
-
+<br>
+<br>
 </div>
 
 {% endblock %}

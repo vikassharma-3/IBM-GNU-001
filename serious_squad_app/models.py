@@ -17,9 +17,17 @@ class Data(models.Model):
     data = models.FileField(upload_to=user_directory_path)
     description = models.CharField(max_length=255, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    expires_on = models.DateTimeField(null=True)
     key = models.CharField(max_length=255, blank=True)
+    inappropiate_flag = models.BooleanField(blank = False, default=False)
 
     def delete(self, *args, **kwargs):
         self.data.delete()
         super().delete(*args, **kwargs)
-        
+
+class Request(models.Model):
+    data = models.ForeignKey(Data, on_delete=models.CASCADE)
+    data_owner = models.IntegerField(blank=False)
+    data_consumer = models.IntegerField(blank=False)
+    data_approve_status = models.BooleanField(blank=False, default=False)
+    requested_at = models.DateTimeField(auto_now_add=True)

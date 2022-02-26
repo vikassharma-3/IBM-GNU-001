@@ -20,4 +20,4 @@ class SignUpForm(UserCreationForm):
 class DataForm(forms.ModelForm):
     class Meta:
         model = Data
-        fields = ('title','data','description')
+        fields = ('title','data','description','expires_on')

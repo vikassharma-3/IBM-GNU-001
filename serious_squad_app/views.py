@@ -20,6 +20,9 @@ from django.utils.encoding import smart_text
 import subprocess,os,sys
 import random
 import string
+import datetime,time
+from django.utils import timezone
+import threading
 
 def superuser_only(function):
     def _inner(request, *args, **kwargs):
@@ -142,6 +145,9 @@ def clear_notification(request):
     return redirect('home')
 
 def upload_data(request):
+    date=datetime.datetime.now() + datetime.timedelta(days=1)
+    date = date.strftime("%Y-%m-%dT%H:%M")
+    print(date)
     if request.method == 'POST':
         form = DataForm(request.POST, request.FILES,)
         if form.is_valid():
@@ -155,7 +161,7 @@ def upload_data(request):
             return redirect('upload_data')
     else:
         form = DataForm()
-    return render(request, 'upload_data.html', {'form': form})
+    return render(request, 'upload_data.html', {'form': form,'date':date},)
 
 def my_data(request):
     data_obj_list = []
@@ -194,3 +200,31 @@ def encrypt_data(data,password):
     data = data.path
     subprocess.run(f'openssl enc -aes-256-cbc -in '+'"'+data+'"'+' -out '+'"'+data+'.enc'+'"'+' -k '+password+' -pbkdf2')
     os.remove(data)
+
+def list_data(request):
+    data = Data.objects.all()
+    return render(request,"list_data.html",{'data':data})
+
+def request_data(request, id):
+    data = Data.objects.get(id=id)
+    request_obj = Request(data=data.id, data_owner=data.user_id, data_consumer=request.user.id)
+    request_obj.save()
+    return redirect('list_data')
+
+def file_expiration_check():
+    while True:
+        time.sleep(1)
+        data = Data.objects.all()
+        for i in data:
+            if i.expires_on < timezone.now():
+                print(f'{i.filename} expired !!')
+                i.data = str(i.data)+".enc"
+                i.save()
+                i.delete()
+
+def file_expiration_check_process():
+    process=threading.Thread(target=file_expiration_check)
+    process.daemon = True
+    process.start()
+
+file_expiration_check_process()
