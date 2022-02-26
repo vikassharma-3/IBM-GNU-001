@@ -4,3 +4,7 @@ https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sig
 https://docs.djangoproject.com/en/4.0/topics/auth/default/
 https://stackoverflow.com/questions/49553511/why-authenticate-return-none-for-inactive-users
 https://www.javatpoint.com/django-crud-application
+https://medium.com/star-gazers/how-to-add-notifications-to-django-app-74df1dac984e
+https://docs.djangoproject.com/en/4.0/topics/email/
+https://docs.djangoproject.com/en/4.0/ref/templates/builtins/
+https://pypi.org/project/django-notifications-hq/

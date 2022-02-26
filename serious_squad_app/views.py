@@ -8,15 +8,17 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from serious_squad.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
+from notifications.signals import notify
 
-# Create your views here.
 def home(request):
     title = ""
     if request.user.is_authenticated:
         if request.user.is_superuser:
             return render(request, 'admin_dashboard.html')
         if request.user.is_superuser is False:
-            return render(request, 'data_owner_dashboard.html')
+            return render(request, 'user_dashboard.html')
     return render(request, 'index.html')
 
 def user_signup(request):
@@ -32,46 +34,19 @@ def user_signup(request):
                 if username == user_obj[i].username:
                     user_obj[i].is_active = 0
                     user_obj[i].save()
+                    n_recipient = User.objects.get(id=user_obj[0].id)
+                    n_sender = User.objects.get(id=user_obj[i].id)
+                    n_message = "Test"
+                    notify.send(sender=n_sender, recipient=n_recipient, verb='Notification',description=n_message)
+                    e_subject = f'Pending Approval'
+                    e_message = f'Hi admin,\n\nUser {user_obj[i].username} is requesting for approval'
+                    e_recepient = 'serioussquad.ibads@gmail.com'
+                    send_mail(e_subject,e_message, EMAIL_HOST_USER, [e_recepient], fail_silently = True)
+            messages.success(request, f'Successfully created account for {username} and will be accessable after administrator approval !!!')
             return redirect('login')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
-
-
-# def user_login(request):
-#     username = password = ''
-#     print('test1')
-#
-#     if request.POST:
-#
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         print('test2')
-#
-#         user = authenticate(username=username, password=password)
-#         if user is not None:
-#             print('test3')
-#             if user.is_active:
-#                 login(request, user)
-#                 return HttpResponseRedirect('home')
-#     return render(request, 'user_login.html', {'form': form})
-
-# def user_login(request):
-#     if request.method == "POST":
-#         form = AuthenticationForm(request, data=request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data.get('username')
-#             password = form.cleaned_data.get('password')
-#             user = authenticate(username=username, password=password)
-#             if user is not None:
-#                 print('not none')
-#                 if user.is_active:
-#                     print('is active')
-#                     login(request, user)
-#                     messages.info(request, f'You are now logged in as {username}.')
-#                     return redirect('home')
-#     form = AuthenticationForm()
-#     return render(request, 'user_login.html', {'form': form})
 
 @login_required
 def change_password(request):
@@ -94,9 +69,9 @@ def user_logout(request):
     logout(request)
     return redirect('home')
 
-def data_owner_dashboard(request):
+def user_dashboard(request):
     if request.user.is_authenticated:
-        return render(request, 'data_owner_dashboard.html')
+        return render(request, 'user_dashboard.html')
     else:
         return redirect('login')
 
@@ -106,12 +81,33 @@ def admin_dashboard(request):
     else:
         return redirect('login')
 
-def user_list(request):
+def manage_user(request):
     users = User.objects.all()
-    return render(request,"user_list.html",{'users':users})
+    return render(request,"manage_user.html",{'users':users})
 
 def approve_user(request, id):
     user = User.objects.get(id=id)
     user.is_active = 1
     user.save()
-    return redirect("user_list")
+    return redirect("manage_user")
+
+def deactivate_user(request, id):
+    user = User.objects.get(id=id)
+    user.is_active = 0
+    user.save()
+    return redirect("manage_user")
+
+def delete_user(request, id):
+    user = User.objects.get(id=id)
+    user.delete()
+    try:
+        notification = Notification.objects.get(actor_object_id=id)
+        notification.delete()
+    except:
+        pass
+    return redirect("manage_user")
+
+def clear_notification(request):
+    notification = Notification.objects.all()
+    notification.delete()
+    return redirect('home')

@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'serious_squad_app',
     'crispy_forms',
+    'notifications',
 ]
+
+NOTIFICATIONS_NOTIFICATION_MODEL = 'serious_squad_app.Notification'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -140,3 +143,9 @@ LOGOUT_REDIRECT_URL = '/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'bot.ibads@gmail.com'
+EMAIL_HOST_PASSWORD = 'Ibads@2022'

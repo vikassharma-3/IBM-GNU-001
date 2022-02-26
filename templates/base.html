@@ -1,4 +1,5 @@
 {% load static %}
+{% load notifications_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,20 +21,53 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <style type="text/css">
-  .card-header{z-index: 1000}
-}
+  .card-header{z-index: 1000;}
 </style>
-
 </head>
+
 <body class="bg-light">
 <div>
     <nav class="navbar navbar-expand-md navbar-light bg-info sticky-top shadow">
       <div class="container">
-        <h4><a href="{% url 'home' %}" class="navbar-brand text-light"><img src="{% static 'image/logo3.png' %}" class = "img-responsive" width = "30%">
+        <h4><a href="{% url 'home' %}" class="navbar-brand text-light"><img src="{% static 'image/logo3.png' %}" class = "img-responsive" width = "28%">
         &nbsp;&nbsp;&nbsp;&nbsp;Identity-Based Authenticated Data Sharing</a></h4>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
+          {% if user.is_superuser %}
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-bell" style="font-size:23px"></i>
+                <span class="badge bg-danger circle position-absolute" style="font-size:10px;">{% live_notify_badge %}</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                {% for notification in user.notifications.unread %}
+    	           <div class="text-center">
+                   {% if notification.actor != None %}
+                   <a class="dropdown-item bg-muted" href="{% url 'manage_user' %}">
+                    <b class="text-muted">Request for approval</b>
+                    <br>
+                     User <b>{{ notification.actor }}</b> is requesting for approval
+                   </a>
+    		         </div>
+    		           <div class="dropdown-divider"></div>
+                   {% endif %}
+                   {% empty %}
+                   <div class="text-center">
+                    <h7><b>No notification</b></h7>
+                  </div>
+    	              {% endfor %}
+                    {% if user.notifications.unread|length >= 1 %}
+                    <div class="text-center">
+                    <button class="dropdown-item" type="button" ><a style="font-size:15px;" href="{% url 'clear_notification' %}">Clear Notification</a></button>
+                  </div>
+                    {% endif %}
+                </div>
+        		</div>
+        </div>
+          &nbsp;&nbsp;
+          {% endif %}
           {% if user.is_authenticated %}
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ml-auto">
@@ -59,7 +93,7 @@
 <!-- Footer -->
 <footer class="page-footer font-small blue fixed-bottom">
   <!-- Copyright -->
-  <div class="footer-copyright text-center py-3 bg-info text-light">© 2022 Copyright:
+  <div class="footer-copyright text-center bg-info py-3 text-light">© 2022 Copyright:
     <a href="" class="text-white">Ganpat University | IBADS By Group-01 </a>
   </div>
   <!-- Copyright -->
