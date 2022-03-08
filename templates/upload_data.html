@@ -28,10 +28,12 @@
           <div class="card-title bg-white">
             <h4 class="text-info text-center">UPLOAD</h4>
           </div>
-          
+          <br>
  <form method="post" enctype="multipart/form-data">
     
     {% csrf_token %}
+    <div class="row">
+      <div class="col">
     <div id="div_id_title" class="form-group text-secondary">
       <div class="">
         <label class="control-label text-secondary" for="title"><b>*Title</b></label>
@@ -44,10 +46,24 @@
         <input type="file" name="data" class="clearablefileinput form-control-file" required id="id_data">
       </div>
     </div>
+    <div id="div_id_universal" class="form-group text-secondary">
+      <label class="control-label text-secondary" for="universal"><b>Who can access this file?</b></label>
+      <br>
+      <div class="form-check form-check-inline">
+        <input type="radio" name="universal" maxlength="255" class="form-check-input" id="id_universal_yes" value="Yes">
+        <label class="form-check-label text-secondary" for="universal_yes">Anyone</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio" name="universal" maxlength="255" class="form-check-input" id="id_universal_no" value="No" checked>
+        <label class="form-check-label text-secondary" for="universal_no">Users with permission</label>
+      </div>
+    </div>
+  </div>
+  <div class="col">
     <div id="div_id_description" class="form-group text-secondary">
       <div class="">
         <label class="control-label text-secondary" for="description"><b>Description</b></label>
-        <input type="text" name="description" maxlength="255" class="textinput textInput form-control" id="id_description" placeholder="Description">
+        <textarea rows="3" name="description" maxlength="255" class="textinput textInput form-control" id="id_description" placeholder="Description"></textarea>
       </div>
     </div>
     <div id="div_id_expires_on" class="form-group text-secondary">
@@ -56,7 +72,9 @@
         <input type="datetime-local" min="{{date}}" name="expires_on" maxlength="255" class="textinput textInput form-control" required id="id_expires_on" placeholder="*expires_on">
       </div>
     </div>
-
+  </div>
+  </div>
+  <p class="text-danger">* Indicates required field</p>
     <button class="btn btn-md btn-primary bg-info btn-block" type="submit">Upload</button>
 
   </form>

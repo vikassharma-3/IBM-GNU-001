@@ -17,7 +17,13 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
 
+FILE_CHOICES = [
+    (True, 1),
+    (False, 0),
+]
+
 class DataForm(forms.ModelForm):
     class Meta:
         model = Data
-        fields = ('title','data','description','expires_on')
+        universal_flag = forms.ChoiceField(widget=forms.RadioSelect, choices=FILE_CHOICES)
+        fields = ('title','data','description','expires_on','universal')
