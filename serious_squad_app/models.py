@@ -20,6 +20,7 @@ class Data(models.Model):
     expires_on = models.DateTimeField(null=True)
     key = models.CharField(max_length=255, blank=True)
     inappropiate_flag = models.BooleanField(blank = False, default=False)
+    universal = models.CharField(max_length=255, blank=False, default='No')
 
     def delete(self, *args, **kwargs):
         self.data.delete()
