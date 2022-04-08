@@ -8,6 +8,18 @@ def validate_email(value):
     if User.objects.filter(email = value).exists():
         raise ValidationError((f"{value} already exists !!!."),params = {'value':value})
 
+def validate_user(value):
+    if not User.objects.filter(username = value).exists():
+        raise ValidationError((f"Can't share file with '{value}'. User '{value}' does not exist !!!."),params = {'value':value})
+
+def validate_file_size(value):
+    filesize= value.size
+    
+    if filesize > 15728640:
+        raise ValidationError("The maximum file size that can be uploaded is 15MB")
+    else:
+        return value
+
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
     last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -17,13 +29,9 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
 
-FILE_CHOICES = [
-    (True, 1),
-    (False, 0),
-]
-
 class DataForm(forms.ModelForm):
+    specific_user = forms.CharField(validators = [validate_user], required = False)
+    data = forms.FileField(validators = [validate_file_size])
     class Meta:
         model = Data
-        universal_flag = forms.ChoiceField(widget=forms.RadioSelect, choices=FILE_CHOICES)
-        fields = ('title','data','description','expires_on','universal')
+        fields = ('title','data','description','expires_on','universal','specific_user',)

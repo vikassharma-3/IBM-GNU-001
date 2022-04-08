@@ -24,6 +24,8 @@ import datetime,time
 from django.utils import timezone
 import threading
 import base64
+import tempfile
+import itertools as IT
 
 def superuser_only(function):
     def _inner(request, *args, **kwargs):
@@ -48,7 +50,7 @@ def user_signup(request):
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+            # user = authenticate(username=username, password=raw_password)
             user_obj = User.objects.all()
             for i in range(len(user_obj)):
                 if username == user_obj[i].username:
@@ -148,12 +150,14 @@ def clear_notification(request):
 def upload_data(request):
     date=datetime.datetime.now() + datetime.timedelta(days=1)
     date = date.strftime("%Y-%m-%dT%H:%M")
+    users = User.objects.all()
     if request.method == 'POST':
         form = DataForm(request.POST, request.FILES,)
         if form.is_valid():
             fs=form.save(commit=False)
             fs.user_id = request.user.id
             fs.key = base64_encode(generate_key())
+            fs.data.name = os.path.splitext(fs.data.name)[0] + f'_{random.randint(999,9999)}'+os.path.splitext(fs.data.name)[1]
             fs.filename = fs.data.name
             fs.save()
             encrypt_data(fs.data,base64_decode(fs.key))
@@ -161,7 +165,7 @@ def upload_data(request):
             return redirect('upload_data')
     else:
         form = DataForm()
-    return render(request, 'upload_data.html', {'form': form,'date':date},)
+    return render(request, 'upload_data.html', {'form': form,'date':date,'users':users},)
 
 def my_data(request):
     data_obj_list = []
@@ -191,6 +195,17 @@ def download_data(request, path ,data):
         response['Content-Disposition'] = 'attachment; filename=%s' % smart_text(data)
         os.remove(file_path)
         return response
+    elif request.user.username == data_obj.specific_user:
+        subprocess.run(f'openssl enc -d -aes-256-cbc -in '+'"'+file_path+'.enc'+'"'+' -out '+'"'+file_path+'"'+' -k '+base64_decode(data_obj.key)+' -pbkdf2')
+        file_wrapper = FileWrapper(open(file_path,'rb'))
+        file_mimetype = mimetypes.guess_type(file_path)
+        response = HttpResponse(file_wrapper, content_type=file_mimetype)
+        response['X-Sendfile'] = file_path
+        response['Content-Length'] = os.stat(file_path).st_size
+        response['Content-Disposition'] = 'attachment; filename=%s' % smart_text(data)
+        os.remove(file_path)
+        return response
+
     return render(request,'403.html')
 
 def generate_key():

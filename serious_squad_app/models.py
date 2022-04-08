@@ -21,6 +21,7 @@ class Data(models.Model):
     key = models.CharField(max_length=255, blank=True)
     inappropiate_flag = models.BooleanField(blank = False, default=False)
     universal = models.CharField(max_length=255, blank=False, default='No')
+    specific_user = models.CharField(max_length=255,null=True)
 
     def delete(self, *args, **kwargs):
         self.data.delete()

@@ -10,6 +10,19 @@
 
 <div class="container">
 
+<script>
+  function access(that) {
+    if (that.id == "id_universal_specific") {
+        document.getElementById("id_specific_user").required = true;
+        document.getElementById("div_id_specific_user").style.display = "block";
+    } 
+    else {
+        document.getElementById("id_specific_user").required = false;
+        document.getElementById("div_id_specific_user").style.display = "none";
+    }
+}
+</script>
+
 {% if messages %}
   <br>
     <ul class="messages">
@@ -46,26 +59,6 @@
         <input type="file" name="data" class="clearablefileinput form-control-file" required id="id_data">
       </div>
     </div>
-    <div id="div_id_universal" class="form-group text-secondary">
-      <label class="control-label text-secondary" for="universal"><b>Who can access this file?</b></label>
-      <br>
-      <div class="form-check form-check-inline">
-        <input type="radio" name="universal" maxlength="255" class="form-check-input" id="id_universal_yes" value="Yes">
-        <label class="form-check-label text-secondary" for="universal_yes">Anyone</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input type="radio" name="universal" maxlength="255" class="form-check-input" id="id_universal_no" value="No" checked>
-        <label class="form-check-label text-secondary" for="universal_no">Users with permission</label>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div id="div_id_description" class="form-group text-secondary">
-      <div class="">
-        <label class="control-label text-secondary" for="description"><b>Description</b></label>
-        <textarea rows="3" name="description" maxlength="255" class="textinput textInput form-control" id="id_description" placeholder="Description"></textarea>
-      </div>
-    </div>
     <div id="div_id_expires_on" class="form-group text-secondary">
       <div class="">
         <label class="control-label text-secondary" for="expires_on"><b>*Expires on</b></label>
@@ -73,7 +66,43 @@
       </div>
     </div>
   </div>
+  <div class="col">
+    <div id="div_id_description" class="form-group text-secondary">
+      <div class="">
+        <label class="control-label text-secondary" for="description"><b>Description</b></label>
+        <textarea rows="2" name="description" maxlength="255" class="textinput textInput form-control" id="id_description" placeholder="Description"></textarea>
+      </div>
+    </div>
+    <div id="div_id_universal" class="form-group text-secondary">
+      <label class="control-label text-secondary" for="universal"><b>Who can access this file?</b></label>
+      <br>
+      <div class="form-check form-check-inline">
+        <input type="radio" name="universal" maxlength="255" class="form-check-input" id="id_universal_yes" value="Yes" onchange="access(this);">
+        <label class="form-check-label text-secondary" for="universal_yes">Anyone</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio" name="universal" maxlength="255" class="form-check-input" id="id_universal_no" value="No" checked onchange="access(this);">
+        <label class="form-check-label text-secondary" for="universal_no">Users with permission</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio" name="universal" maxlength="255" class="form-check-input" id="id_universal_specific" value="No" onchange="access(this);">
+        <label class="form-check-label text-secondary" for="universal_specific">Specific User</label>
+      </div>
+    </div>
+    <div id="div_id_specific_user" class="form-group text-secondary" style="display: none;">
+        <input type="text" name="specific_user" maxlength="255" class="textinput textInput form-control" id="id_specific_user" placeholder="Enter user's username">
+    </div>
   </div>
+  </div>
+  {% if form.errors %}
+                {% for field in form %}
+                  {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                    </div>
+                  {% endfor %}
+                {% endfor %}
+              {% endif %}
   <p class="text-danger">* Indicates required field</p>
     <button class="btn btn-md btn-primary bg-info btn-block" type="submit">Upload</button>
 
