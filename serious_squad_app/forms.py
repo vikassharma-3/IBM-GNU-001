@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from .models import *
 
 def validate_email(value):
@@ -31,7 +32,7 @@ class SignUpForm(UserCreationForm):
 
 class DataForm(forms.ModelForm):
     specific_user = forms.CharField(validators = [validate_user], required = False)
-    data = forms.FileField(validators = [validate_file_size])
+    data = forms.FileField(validators = [validate_file_size, FileExtensionValidator( ['doc','pdf','txt','odt','rtf','wpd','ods','xls','xlsm','xlsx','pptx','ppt','pps','odp','key','csv','dat','db','dbf','log','sql','tmp','bak','tar','bin','7z','rar','tar.gz','bz','zip','mp3','mpa','ogg','wav','wma','vcf','pst','ost','bmp','gif','ico','jpeg','png','psd'] )])
     class Meta:
         model = Data
         fields = ('title','data','description','expires_on','universal','specific_user',)

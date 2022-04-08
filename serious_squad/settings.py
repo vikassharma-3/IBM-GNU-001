@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'serious_squad_app',
     'notifications',
+    'django_filters',
 ]
 
 NOTIFICATIONS_NOTIFICATION_MODEL = 'serious_squad_app.Notification'

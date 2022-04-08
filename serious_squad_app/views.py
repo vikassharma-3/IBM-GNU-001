@@ -26,6 +26,7 @@ import threading
 import base64
 import tempfile
 import itertools as IT
+from .filters import DataFilter
 
 def superuser_only(function):
     def _inner(request, *args, **kwargs):
@@ -108,7 +109,7 @@ def admin_dashboard(request):
 
 @superuser_only
 def manage_user(request):
-    users = User.objects.all()
+    users = User.objects.all().exclude(id=request.user.id)
     return render(request,"manage_user.html",{'users':users})
 
 @superuser_only
@@ -157,7 +158,7 @@ def upload_data(request):
             fs=form.save(commit=False)
             fs.user_id = request.user.id
             fs.key = base64_encode(generate_key())
-            fs.data.name = os.path.splitext(fs.data.name)[0] + f'_{random.randint(999,9999)}'+os.path.splitext(fs.data.name)[1]
+            fs.data.name = os.path.splitext(fs.data.name)[-2] + f'_{random.randint(999,9999)}'+os.path.splitext(fs.data.name)[-1]
             fs.filename = fs.data.name
             fs.save()
             encrypt_data(fs.data,base64_decode(fs.key))
@@ -232,8 +233,10 @@ def encrypt_data(data,password):
     os.remove(data)
 
 def list_data(request):
-    data = Data.objects.all()
-    return render(request,"list_data.html",{'data':data})
+    data = Data.objects.all().exclude(user=request.user.id)
+    users = User.objects.all().exclude(id=request.user.id)
+    data_filter = DataFilter(request.GET, queryset=data)
+    return render(request,"list_data.html",{'filter':data_filter,'users':users})
 
 def request_data(request, id):
     data = Data.objects.get(id=id)

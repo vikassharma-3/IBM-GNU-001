@@ -8,7 +8,7 @@
 </div>
 <br>
 <div class="container">
-  <h5>Pending Approvals</h5>
+  <h5>Inactive Users</h5>
     <br>
 
   <table class="table table-bordered bg-light">
@@ -37,7 +37,7 @@
 
   </table>
   <br>
-  <h5>Approved Users</h5>
+  <h5>Active Users</h5>
     <br>
 
   <table class="table table-bordered bg-light">
@@ -51,7 +51,7 @@
 
   {% if users|length > 1 %}
   {% for user in users %}
-  {% if user.is_active == True and user.is_superuser != True %}
+  {% if user.is_active == True %}
   <tbody>
       <tr>
         <td>{{ user.username}}</td>

@@ -10,3 +10,7 @@ https://docs.djangoproject.com/en/4.0/ref/templates/builtins/
 https://pypi.org/project/django-notifications-hq/
 https://stackoverflow.com/questions/29321494/show-input-field-only-if-a-specific-option-is-selected
 https://stackoverflow.com/questions/18770369/how-to-set-html5-required-attribute-in-javascript
+https://www.geeksforgeeks.org/fileextensionvalidator-validate-file-extensions-in-django/
+https://www.computerhope.com/issues/ch001789.htm
+https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html
+https://docs.djangoproject.com/en/4.0/ref/models/querysets/

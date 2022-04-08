@@ -1,30 +1,111 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="card-header sticky-top bg-muted">
+<div class="card-header sticky-top bg-light">
 <div class="container">
 <a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
 </div>
 </div>
 <br>
 <div class="container">
-	<table class="table table-bordered bg-light">
+  <div class="card">
+    <div class="card-body bg-white">
+      <h5 class="text-center text-secondary"><b>Search Data</b></h5>
+      <br>
+  <form method="get">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+          <label for="id_title" class="text-secondary"><b>Title</b></label>
+          <input class="form-control" id="id_title" type="text" name="title" placeholder="Title">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="id_filename" class="text-secondary"><b>Filename</b></label>
+          <input class="form-control" id="id_filename" type="text" name="filename" placeholder="Filename">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="id_universal" class="text-secondary"><b>Data Type</b></label>
+          <select class="form-control" id="id_universal" name="universal">
+            <option value="" selected>Any</option>
+            <option value="Yes">Public</option>
+            <option value="No">Private</option>
+            </select>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+          <div class="col">
+            <div class="form-group">
+          <label for="id_description" class="text-secondary"><b>Description</b></label>
+          <input class="form-control" id="id_description" type="text" name="description" placeholder="Description">
+        </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+          <label for="id_user" class="text-secondary"><b>Data Owner</b></label>
+          <select class="form-control" id="id_user" name="user">
+            <option value="" selected>Any</option>
+            {% for i in users %}
+            {% if i.username != 'admin' %}
+            <option value={{i.id}}>{{i.username}}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+        </div>
+      </div>
+      
+    </div>
+      <br>
+      <button class="btn btn-info btn-md align-middle" type="submit">Search</button>
+  </form>
+</div>
+</div>
+<br>
+	<table class="table table-bordered bg-white">
     <thead>
       <tr>
-        <th>Title</th>
-        <th>Filename</th>
-        <th>Description</th>
+        <th class="text-center align-middle">Title</th>
+        <th class="text-center align-middle">Filename</th>
+        <th class="text-center align-middle">Description</th>
+        <th class="text-center align-middle">Data Type</th>
+        <th class="text-center align-middle">Data Owner</th>
+        <th class="text-center align-middle">Expiration date</th>
+        <th class="text-center align-middle">Action</th>
       </tr>
     </thead>
-  {% for i in data %}
   <tbody>
+    {% for data in filter.qs %}
       <tr>
-        <td>{{ i.title }}</td>
-        <td>{{ i.filename }}</td>
-        <td>{{ i.description }}</td>
+        <td>{{ data.title }}</td>
+        <td>{{ data.filename }}</td>
+        <td>{{ data.description }}</td>
+        {% if data.universal == 'Yes' %}
+        <td>Public</td>
+        {% else %}
+        <td>Private</td>
+        {% endif %}
+        <td>{{ data.user }}</td>
+
+        <td>{{ data.expires_on }}</td>
+        <td>
+          {% if data.universal == 'Yes' or data.specific_user == user.username %}
+          <a href="/download_data/{{data.data}}"><div class="btn btn-info">Download</div></a>
+          {% else %}
+          <a href="#"><div class="btn btn-info">&nbsp;&nbsp;Request&nbsp;&nbsp;</div></a>
+          {% endif %}
+        </td>
       </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7">No data</td>
+        </tr>
+      {% endfor %}
     </tbody>
-  {% endfor %}
   </table>
+  <br><br><br>
 </div>
 {% endblock %}
