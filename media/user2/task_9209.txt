@@ -1,6 +1,0 @@
-1. URL Difference Identification: If there is deletion of the URL or addition of the URL then this module should detect insert/edit/delete.
-2. Form/Form Input field identification: If there is insertion/deletion/modification in the form/form-field then this module should detect insert/edit/delete of form or form field with URL.
-3. Website code modification identification: If code of the website is modified, how many percentage of code modified [highlight insertion/deletion etc.].
-4. Phishing/Malware link scanning: Crawling and scanning all the pages and checking for Thirdparty phishing/malware URLs [we'll provide you phishing URL DB]
-5. Sensitive string leak identification [Credit card leak/SQL errors etc.]: Crawling all pages and identifying sensitive information leakage such as Credit card number, programming errors etc.
-6. Response Header modification: Checking if there are insertion/deletion in the header
