@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-header sticky-top bg-light">
+<div class="container">
+<a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
+</div>
+</div>
+<br>
+<div class="container">
+<br>
+	<table class="table table-bordered bg-white table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th class="text-center align-middle">Filename</th>
+        <th class="text-center align-middle">File owner</th>
+        <th class="text-center align-middle">Report count</th>
+        <th class="text-center align-middle">Last reported on</th>
+        <th class="text-center align-middle col-sm-3">Comments</th>
+        <th class="text-center align-middle col-sm-5">Action</th>
+      </tr>
+    </thead>
+  <tbody>
+    {% for data in report_obj %}
+      <tr>
+        <td>{{ data.data.filename }}</td>
+        <td>{{ data.data.user }}</td>
+        <td>{{ data.report_count }}</td>
+        <td>{{ data.last_reported.date }}</td>
+        <td>{{ data.report_comment | safe }}</td>
+        <td class="text-center">
+          <a href="/download_data/{{data.data.data}}"><div class="btn btn-info">Download</div></a>
+          <a href="{% url 'remove_flag' data.id %}"><div class="btn btn-info" onclick="return confirm('Are you sure?');">Mark as Appropriate</div></a>
+          <a href="{% url 'delete_inappropriate' data.data.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Remove file</div></a>
+        </td>
+      </tr>
+      {% empty %}
+        <tr>
+          <td colspan="8">No data</td>
+        </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+  <br><br><br>
+</div>
+{% endblock %}

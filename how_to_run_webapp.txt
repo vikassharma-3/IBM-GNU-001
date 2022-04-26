@@ -1,0 +1,21 @@
+Download CA certicate for browser
+https://drive.google.com/file/d/1kkhKDonJ2sM0AXn1jS27V2tO3GNkm0PQ/view?usp=sharing
+
+##########For Windows
+
+------------HTTP--------------
+python manage.py runserver
+http://127.0.0.1:8000/
+------------HTTPS--------------
+python manage.py runsslserver --certificate localhost.crt --key localhost.key
+https://127.0.0.1:8000/
+
+
+##########For Linux(AWS)
+------------HTTP--------------
+sudo python3 manage.py runserver 0.0.0.0:80
+http://3.108.236.102/
+
+------------HTTPS--------------
+sudo python3 manage.py runsslserver 0.0.0.0:443 --certificate localhost.crt --key localhost.key
+https://3.108.236.102/

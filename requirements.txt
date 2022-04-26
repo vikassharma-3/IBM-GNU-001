@@ -1,3 +1,5 @@
 django
 django-notifications-hq
 django-filter
+Django-Verify-Email
+django-sslserver

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-header sticky-top bg-muted">
+<div class="container">
+<a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
+</div>
+</div>
+<br>
+<div class="container">
+
+<h5>Manage File Requests</h5>
+    <br>
+
+  <table class="table table-bordered bg-white table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th>Requested file</th>
+        <th>Requested by</th>
+        <th>Requested on</th>
+        <th class="col-sm-3">Action</th>
+      </tr>
+    </thead>
+  {% for request in requests %}
+  {% if request.data_approve_status == False %}
+
+  <tbody>
+      <tr>
+        <td>{{ request.data_name}}</td>
+        <td>{{ request.data_consumer_name}}</td>
+        <td>{{ request.requested_at.date}}</td>
+        <td class="text-center">
+          <a href="{% url 'approve_data_request' request.id %}"><div class="btn btn-success" onclick="return confirm('Are you sure?');">Approve</div></a>
+          <a href="{% url 'reject_data_request' request.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Reject</div></a>
+        </td>
+      </tr>
+    </tbody>
+    {% endif %}
+    {% empty %}
+      <tbody>
+    <tr>
+      <td colspan="5">No data found</td>
+    </tr>
+  </tbody>
+  {% endfor %}
+
+  </table>
+<br>
+<h5>Granted File Requests</h5>
+    <br>
+
+  <table class="table table-bordered bg-white table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th>File</th>
+        <th>Granted to</th>
+        <th class="col-sm-3">Action</th>
+      </tr>
+    </thead>
+  {% for request in requests %}
+  {% if request.data_approve_status == True %}
+
+  <tbody>
+      <tr>
+        <td>{{ request.data_name}}</td>
+        <td>{{ request.data_consumer_name}}</td>
+        <td class="text-center">
+          <a href="{% url 'revoke_data_permission' request.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Revoke</div></a>
+        </td>
+      </tr>
+    </tbody>
+    {% endif %}
+    {% empty %}
+      <tbody>
+    <tr>
+      <td colspan="5">No data found</td>
+    </tr>
+  </tbody>
+  {% endfor %}
+
+  </table>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

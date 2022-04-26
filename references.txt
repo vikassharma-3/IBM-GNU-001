@@ -14,3 +14,5 @@ https://www.geeksforgeeks.org/fileextensionvalidator-validate-file-extensions-in
 https://www.computerhope.com/issues/ch001789.htm
 https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html
 https://docs.djangoproject.com/en/4.0/ref/models/querysets/
+https://pypi.org/project/Django-Verify-Email/
+https://stackoverflow.com/questions/18751659/django-edit-queryset-objects-without-affecting-database

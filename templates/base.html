@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>{% block title %}IBADS By Group-01{% endblock %}</title>
+<title>{% block title %}IBADS{% endblock %}</title>
 <link rel="shortcut icon" type="image/png" href="{% static 'serious_squad_app/image/favicon.ico' %}"/>
 <link href="{% static 'serious_squad_app/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'serious_squad_app/css/font-awesome.min.css' %}" rel="stylesheet">
@@ -41,21 +41,20 @@
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-          {% if user.is_superuser %}
+          
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="dropdown">
+            <div class="dropdown ">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell" style="font-size:23px"></i>
                 <span class="badge bg-danger circle position-absolute" style="font-size:10px;">{% live_notify_badge %}</span>
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <div class="dropdown-menu w-60 p-3" aria-labelledby="dropdownMenu2">
                 {% for notification in user.notifications.unread %}
     	           <div class="text-center">
                    {% if notification.actor != None %}
-                   <a class="dropdown-item bg-muted" href="{% url 'manage_user' %}">
-                    <b class="text-muted">Request for approval</b>
+                    <b class="text-muted">{{notification.verb}}</b>
                     <br>
-                     User <b>{{ notification.actor }}</b> is requesting for approval
+                     {{notification.description}}
                    </a>
     		         </div>
     		           <div class="dropdown-divider"></div>
@@ -74,7 +73,7 @@
         		</div>
         </div>
           &nbsp;&nbsp;
-          {% endif %}
+          
           {% if user.is_authenticated %}
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ml-auto">

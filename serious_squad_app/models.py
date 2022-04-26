@@ -17,6 +17,7 @@ class Data(models.Model):
     data = models.FileField(upload_to=user_directory_path)
     description = models.CharField(max_length=255, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_at_1 = models.DateTimeField(auto_now_add=True)
     expires_on = models.DateTimeField(null=True)
     key = models.CharField(max_length=255, blank=True)
     inappropiate_flag = models.BooleanField(blank = False, default=False)
@@ -33,3 +34,15 @@ class Request(models.Model):
     data_consumer = models.IntegerField(blank=False)
     data_approve_status = models.BooleanField(blank=False, default=False)
     requested_at = models.DateTimeField(auto_now_add=True)
+
+class UserActivity(models.Model):
+    activity = models.CharField(max_length=255)
+    time = models.DateTimeField(auto_now_add=True)
+    time_1 = models.DateTimeField(auto_now_add=True)
+
+class ReportFlag(models.Model):
+    data = models.ForeignKey(Data, on_delete=models.CASCADE)
+    report_count = models.IntegerField(blank=True, null=True)
+    report_comment = models.CharField(max_length=2000, blank=False)
+    reported_by = models.CharField(max_length=2000, blank=True)
+    last_reported = models.DateTimeField(auto_now_add=True)

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="card-header sticky-top bg-muted">
+<div class="card-header sticky-top bg-light">
 <div class="container">
 <a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
 </div>
@@ -11,12 +11,12 @@
   <h5>Inactive Users</h5>
     <br>
 
-  <table class="table table-bordered bg-light">
-    <thead>
+  <table class="table table-bordered bg-white table-hover">
+    <thead class="thead-light">
       <tr>
         <th>Username</th>
         <th>Email</th>
-        <th>Action</th>
+        <th class="col-sm-3">Action</th>
       </tr>
     </thead>
   {% for user in users %}
@@ -26,8 +26,8 @@
       <tr>
         <td>{{ user.username}}</td>
         <td>{{ user.email}}</td>
-        <td>
-          <a href="{% url 'approve_user' user.id %}"><div class="btn btn-success" onclick="return confirm('Are you sure?');">Approve</div></a>
+        <td class="text-center">
+          <a href="{% url 'approve_user' user.id %}"><div class="btn btn-success" onclick="return confirm('Are you sure?');">Activate</div></a>
           <a href="{% url 'delete_user' user.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Reject</div></a>
         </td>
       </tr>
@@ -40,12 +40,12 @@
   <h5>Active Users</h5>
     <br>
 
-  <table class="table table-bordered bg-light">
-    <thead>
+  <table class="table table-bordered bg-light table-hover">
+    <thead class="thead-light">
       <tr>
         <th>Username</th>
         <th>Email</th>
-        <th>Action</th>
+        <th class="col-sm-3">Action</th>
       </tr>
     </thead>
 
@@ -56,7 +56,7 @@
       <tr>
         <td>{{ user.username}}</td>
         <td>{{ user.email}}</td>
-        <td>
+        <td class="text-center">
           <a href="{% url 'deactivate_user' user.id %}"><div class="btn btn-secondary" onclick="return confirm('Are you sure?');">Deactivate</div></a>
           <a href="{% url 'delete_user' user.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Remove</div></a>
         </td>

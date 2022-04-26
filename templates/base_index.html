@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>{% block title %}IBADS By Group-01{% endblock %}</title>
+<title>{% block title %}IBADS{% endblock %}</title>
 <link rel="shortcut icon" type="image/png" href="{% static 'serious_squad_app/image/favicon.ico' %}"/>
 <link href="{% static 'serious_squad_app/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'serious_squad_app/css/font-awesome.min.css' %}" rel="stylesheet">
@@ -52,9 +52,9 @@
     	           <div class="text-center">
                    {% if notification.actor != None %}
                    <a class="dropdown-item bg-muted" href="{% url 'manage_user' %}">
-                    <b class="text-muted">Request for approval</b>
+                    <b class="text-muted">{{notification.verb}}</b>
                     <br>
-                     User <b>{{ notification.actor }}</b> is requesting for approval
+                     {{notification.description}}
                    </a>
     		         </div>
     		           <div class="dropdown-divider"></div>

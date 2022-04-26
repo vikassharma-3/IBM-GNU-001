@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-header sticky-top bg-light">
+<div class="container">
+<a href="{% url 'home' %}" class="btn bg-info text-white">&larr; Back</a>
+</div>
+</div>
+<br>
+<div class="container">
+  <div class="card">
+    <div class="card-body bg-white">
+      <br>
+  <form method="get">
+        
+      <div class="row">
+          <div class="col">
+        <div class="form-group">
+          <label for="id_activity" class="text-secondary"><b>Activity</b></label>
+          <input class="form-control" id="id_activity" type="text" name="activity" placeholder="Activity">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="id_time" class="text-secondary"><b>Date from</b></label>
+          <input class="form-control" id="id_time" type="date" name="time">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="id_time_1" class="text-secondary"><b>Date to</b></label>
+          <input class="form-control" id="id_time_1" type="date" name="time_1">
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-info btn-md align-middle" type="submit">Search</button>
+  </form>
+</div>
+</div>
+<br>
+	<table class="table table-bordered bg-white table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th class="text-center align-middle">Activity</th>
+        <th class="text-center align-middle col-sm-3">Date</th>
+      </tr>
+    </thead>
+  <tbody>
+    {% for activity in filter %}
+      <tr>
+        <td>{{ activity.activity }}</td>
+        <td>{{ activity.time }}</td>
+      </tr>
+      {% empty %}
+        <tr>
+          <td colspan="8">No data</td>
+        </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+  <br><br><br>
+</div>
+{% endblock %}

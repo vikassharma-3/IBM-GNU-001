@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-vrt7e4eh56v1cr7p90*^$3)b-#5twyl37^h_!fn7#gty4!tnd^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'serious_squad_app',
     'notifications',
     'django_filters',
+    'verify_email.apps.VerifyEmailConfig',
+    'sslserver',
 ]
 
 NOTIFICATIONS_NOTIFICATION_MODEL = 'serious_squad_app.Notification'
@@ -86,7 +88,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -142,3 +143,9 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'bot.ibads@gmail.com'
 EMAIL_HOST_PASSWORD = 'Ibads@2022'
+
+HTML_MESSAGE_TEMPLATE = os.path.join(BASE_DIR,'templates/email_verification_message.html')
+VERIFICATION_SUCCESS_TEMPLATE = os.path.join(BASE_DIR,'templates/email_verification_success.html')
+VERIFICATION_FAILED_TEMPLATE = os.path.join(BASE_DIR,'templates/email_verification_fail.html')
+
+# SECURE_SSL_REDIRECT = True

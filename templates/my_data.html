@@ -8,16 +8,16 @@
 </div>
 <br>
 <div class="container">
-  <h5>My Data</h5>
+  <h5>My Files</h5>
     <br>
-  <table class="table table-bordered bg-light">
-    <thead>
+  <table class="table table-bordered bg-white table-hover">
+    <thead class="thead-light">
       <tr>
         <th>Title</th>
-        <th>File Name</th>
+        <th>Filename</th>
         <th>Description</th>
         <th>Expires on</th>
-        <th>Action</th>
+        <th class="col-sm-3">Action</th>
       </tr>
     </thead>
   {% for i in data %}
@@ -26,8 +26,8 @@
         <td>{{ i.title }}</td>
         <td>{{ i.filename }}</td>
         <td>{{ i.description }}</td>
-        <td>{{ i.expires_on }}</td>
-        <td>
+        <td>{{ i.expires_on.date }}</td>
+        <td class="text-center">
           <a href="/download_data/{{i.data}}"><div class="btn btn-info">Download</div></a>
           <a href="{% url 'delete_data' i.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</div></a>
         </td>
@@ -43,6 +43,43 @@
 
   </table>
   <br>
+
+  <h5>My Requested Files</h5>
+    <br>
+  <table class="table table-bordered bg-white table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th>Filename</th>
+        <th>File Owner</th>
+        <th class="col-sm-3">Action</th>
+      </tr>
+    </thead>
+  {% for request in requests %}
+  <tbody>
+      <tr>
+        <td>{{ request.data_name }}</td>
+        <td>{{ request.data_owner_name }}</td>
+        <td class="text-center">
+          {% if request.data_approve_status == 1 %}
+          <a href="/download_data/{{request.data_path}}"><div class="btn btn-info">Download</div></a>
+          {% else %}
+          <div class="btn btn-info disabled">Requested</div>
+          {% endif %}
+        </td>
+        
+    </tbody>
+      </tr>
+      {% empty %}
+      <tbody>
+    <tr>
+      <td colspan="5">No data found</td>
+    </tr>
+  </tbody>
+  {% endfor %}
+
+  </table>
+  <br>
+
 </div>
 <br>
 <br>

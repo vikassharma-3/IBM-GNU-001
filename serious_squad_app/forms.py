@@ -32,7 +32,13 @@ class SignUpForm(UserCreationForm):
 
 class DataForm(forms.ModelForm):
     specific_user = forms.CharField(validators = [validate_user], required = False)
-    data = forms.FileField(validators = [validate_file_size, FileExtensionValidator( ['doc','pdf','txt','odt','rtf','wpd','ods','xls','xlsm','xlsx','pptx','ppt','pps','odp','key','csv','dat','db','dbf','log','sql','tmp','bak','tar','bin','7z','rar','tar.gz','bz','zip','mp3','mpa','ogg','wav','wma','vcf','pst','ost','bmp','gif','ico','jpeg','png','psd'] )])
+    data = forms.FileField(validators = [validate_file_size, FileExtensionValidator( ['doc','docx','pdf','txt','odt','rtf','wpd','ods','xls','xlsm','xlsx','pptx','ppt','pps','odp','key','csv','dat','db','dbf','log','sql','tmp','bak','tar','bin','7z','rar','tar.gz','bz','zip','mp3','mpa','ogg','wav','wma','vcf','pst','ost','bmp','gif','ico','jpeg','jpg','png','psd'] )])
     class Meta:
         model = Data
         fields = ('title','data','description','expires_on','universal','specific_user',)
+
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = ReportFlag
+        fields = '__all__'
+        exclude = ('reported_by','report_count')

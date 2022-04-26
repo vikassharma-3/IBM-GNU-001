@@ -87,7 +87,7 @@
         <th class="text-center align-middle">File Owner</th>
         <th class="text-center align-middle">Upload date</th>
         <th class="text-center align-middle">Expiration date</th>
-        <th class="text-center align-middle col-md-3">Action</th>
+        <th class="text-center align-middle">Action</th>
       </tr>
     </thead>
   <tbody>
@@ -105,56 +105,14 @@
         <td>{{ data.uploaded_at.date }}</td>
         <td>{{ data.expires_on.date }}</td>
         <td class="text-center">
-          {% if data.universal == 'Yes' or data.button == 'download' %}
           <a href="/download_data/{{data.data}}"><div class="btn btn-info">Download</div></a>
-          {% else %}
-            {% if data.button == 'requested' %}
-          <div class="btn btn-info disabled">Requested</div>
-          {% else %}
-          <a href="{% url 'request_data' data.id %}"><div class="btn btn-info">&nbsp;&nbsp;Request&nbsp;&nbsp;</div></a>
-          {% endif %}
-          {% endif %}
-          {% if data.report_button == 'reported' %}
-          <div class="btn btn-secondary disabled">Reported</div>
-          {% else %}
-            <button id="my_button" class="btn btn-danger" data-toggle="modal" data-target="#myModal_{{data.id}}">&nbsp;&nbsp;Report&nbsp;&nbsp;</button>
-          {% endif %}
-          <!-- Modal -->
-      <div class="modal fade" id="myModal_{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <form method="post" action="report_flag">
-              {% csrf_token %}
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Report</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <b><p class="text-left">Reason to report this file?</p></b>
-              <div id="div_id_data" class="form-group text-secondary">
-                  <input type="hidden" name="data" required id="id_data" class="textinput textInput form-control" value="{{data.id}}">
-              </div>
-              <div id="div_id_report_comment" class="form-group text-secondary">
-                  <input type="text" name="report_comment" maxlength="255" class="textinput textInput form-control" required id="id_report_comment" placeholder="Reason">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-danger">Report</button>
-            </div>
-          </form>
-          </div>
-        </div>
-      </div>
+          <a href="{% url 'delete_data' data.id %}"><div class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</div></a>
         </td>
       </tr>
       {% empty %}
         <tr>
           <td colspan="8">No data</td>
         </tr>
-
       {% endfor %}
       
     </tbody>
